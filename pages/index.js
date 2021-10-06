@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 
 import { Input, Form, Button, Divider } from "antd";
 import { useState } from "react";
-import { getMeta } from './get-meta';
+import { getMeta } from '../util/get-meta';
 import { DownloadOutlined } from '@ant-design/icons';
 import 'antd/dist/antd.css';
 
