@@ -75,7 +75,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-            <span>  Made by <a target="_blank" href="https://twitter.com/0xAlice_">Alice</a></span>
+            <span>  Made by <a target="_blank" rel="noreferrer" href="https://twitter.com/0xAlice_">Alice</a></span>
       </footer>
     </div>
   );
