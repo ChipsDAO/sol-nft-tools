@@ -1,5 +1,8 @@
-export const resolveSequentially = function (items, func) {
-  return items.reduce((previousPromise, item) => {
-    return previousPromise.then(() => func(item));
+export const resolveSequentially = function (items: any[], func, setCounter) {
+  return items.reduce((previousPromise, item, i) => {
+    return previousPromise.then(() => {
+      setCounter(i + 1)
+      return func(item);
+    });
   }, Promise.resolve());
 };

@@ -327,8 +327,8 @@ const createJsonObject = async (key: string): Promise<unknown> => {
 };
 
 
-export const getMeta = (tokens: string[]) => {
-  return resolveSequentially(tokens, createJsonObject).then(function () {
+export const getMeta = (tokens: string[], setCounter) => {
+  return resolveSequentially(tokens, createJsonObject, setCounter).then(function () {
     download(
       "mint-data-" + Date.now() + ".json",
       jsonFormat(mints, {

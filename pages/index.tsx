@@ -11,6 +11,7 @@ export default function Home() {
   const [jsonVal, setJsonVal] = useState(undefined);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [counter, setCounter] = useState(0);
   return (
     <div className={styles.container}>
       <Head>
@@ -76,6 +77,8 @@ export default function Home() {
             />
           </Form.Item>
 
+
+          
           <Button
             type="primary"
             loading={loading}
@@ -86,7 +89,7 @@ export default function Home() {
             style={{ margin: "0 auto", display: "block" }}
             onClick={() => {
               setLoading(true);
-              getMeta(jsonVal)
+              getMeta(jsonVal, setCounter)
                 .then(() => {
                   setLoading(false);
                 })
@@ -96,7 +99,7 @@ export default function Home() {
                 });
             }}
           >
-            Gib Meta!
+            {loading ? `${counter} / ${jsonVal?.length}` : 'Gib Meta!'}
           </Button>
         </Form>
       </main>
