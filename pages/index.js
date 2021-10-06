@@ -11,6 +11,7 @@ const { TextArea } = Input;
 export default function Home() {
   const [jsonVal, setJsonVal] = useState(undefined);
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   return (
     <div className={styles.container}>
       <Head>
@@ -66,8 +67,14 @@ export default function Home() {
             </Form.Item>
 
 
-            <Button type="primary" shape="round" disabled={!jsonVal || !jsonVal.length} icon={<DownloadOutlined />} size="large" style={{margin: '0 auto', display: 'block'}} onClick={() => {
-              getMeta(jsonVal).catch(e => alert(e))
+            <Button type="primary" loading={loading} shape="round" disabled={!jsonVal || !jsonVal.length} icon={<DownloadOutlined />} size="large" style={{margin: '0 auto', display: 'block'}} onClick={() => {
+              setLoading(true);
+              getMeta(jsonVal).then(() => {
+                setLoading(false)
+              }).catch(e => {
+                alert(e);
+                setLoading(false)
+              })
             }}>
               Gib Meta!
               </Button>
