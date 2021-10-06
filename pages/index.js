@@ -62,7 +62,7 @@ export default function Home() {
                 }),
               ]}
             >
-              <TextArea rows={4} className={styles.card} />
+              <TextArea rows={4} className={styles.card} style={{width: '100%'}} />
             </Form.Item>
 
 
