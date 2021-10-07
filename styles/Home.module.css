@@ -18,17 +18,28 @@
   margin: 46px 0 100px;
 }
 
+.menu {
+  position: fixed;
+  justify-content: center;
+  left: 0;
+  right: 0;
+  top: 0;
+}
 .footer {
   width: 100%;
-  height: 100px;
+  height: 60px;
   border-top: 1px solid #eaeaea;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
   position: fixed;
+  gap: 2rem;
   bottom: 0;
   left: 0;
   right: 0;
+  background-color: rgba(0,0,0,0.66);
+  width: 100%;
+  padding: 0 3rem;
 }
 
 .footer a {
@@ -124,4 +135,48 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+
+
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.sol-logo {
+  width: 240px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.p-fixed {
+  position: fixed;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-block {
+  display: block;
+}
+
+.m-0-auto {
+  margin: 0 auto;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.inner-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.text-right {
+  text-align: right;
 }
