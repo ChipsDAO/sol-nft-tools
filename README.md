@@ -1,6 +1,9 @@
 # SOL NFT Tools
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/905d06a5-13d2-4f57-9100-5bdf069c0982/deploy-status)](https://app.netlify.com/sites/gib-meta/deploys)
+
+
+[Live Version](https://sol-nft.tools/)
 ## Getting Started
 
 This is a next.js app, so run the development server:
