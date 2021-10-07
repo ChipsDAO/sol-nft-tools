@@ -1,5 +1,5 @@
 import '../styles/globals.css';
-import {Meta} from './meta';
+import {Meta} from '../components/meta';
 
 function MyApp({ Component, pageProps }) {
   return <>
