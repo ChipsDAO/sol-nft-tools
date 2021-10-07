@@ -44,7 +44,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
   const router = useRouter();
-  console.log(router.query?.mode)
   const [selectedKeys, setSelectedKeys] = useState([router.query?.mode as string || 'mints']);
   const [endpoint, setEndpoint] = useState(
     "https://solana-api.projectserum.com"
@@ -54,8 +53,11 @@ export default function Home() {
     setSelectedKeys([route]);
   };
 
+  console.log(selectedKeys)
   useEffect(() => {
-    setSelectedKeys([router.query?.mode as string])
+    if (router.query?.mode) {
+      setSelectedKeys([router.query?.mode as string])
+    }
   }, [router.query?.mode])
 
   const DEFAULT = `${ENDPOINTS.find(e => e.endpoint === endpoint).name} (${ENDPOINTS.find(e => e.endpoint === endpoint).endpoint})`
@@ -104,7 +106,6 @@ export default function Home() {
                     setJsonVal(value);
                     Promise.resolve(value);
                   } catch (e) {
-                    debugger
                     return Promise.reject(new Error("Invalid JSON!"));
                   }
                 },
@@ -228,8 +229,6 @@ export default function Home() {
   const GibHolders = () => {
     return (
       <>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-
         <p>
           Gib-Holders serves one purpose: To gib you holders from Solana Mint
           IDs. It will return an object with holders, mints and amounts.
