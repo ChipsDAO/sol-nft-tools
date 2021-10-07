@@ -1,7 +1,7 @@
-import { jsonFormat } from 'json-format';
+import jsonFormat from 'json-format';
 import { download } from './download';
 import { resolveSequentially } from './resolve-sequentially';
-let holders = [];
+let holders = {};
 const getTokenHolder = key => {
   return fetch('https://solana-api.projectserum.com', {
     body: `{
@@ -33,7 +33,15 @@ const getTokenHolder = key => {
   }).then(res => res.json()).then(async res => {
     res.result.forEach((r) => {
       if (r.account.data.parsed.info.tokenAmount.uiAmount > 0) {
-        holders = [...holders, r.account.data.parsed.info.owner]
+        if (!holders[r.account.data.parsed.info.owner]) {
+          holders[r.account.data.parsed.info.owner] = {
+            amount: 1,
+            mints: [key]
+          }
+        } else {
+          holders[r.account.data.parsed.info.owner].amount += 1;
+          holders[r.account.data.parsed.info.owner].mints.push(key)
+        }
       }
     })
   })
@@ -45,6 +53,6 @@ export const getHolders = (mintIds: string[], setCounter) => {
       type: "space",
       size: 2,
     }));
-    holders.forEach(() => holders.unshift());
+    holders = {};
   });
 }
