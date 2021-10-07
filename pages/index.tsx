@@ -3,12 +3,39 @@ import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { Menu } from "antd";
 import { useRouter } from "next/router";
-
-import { Input, Form, Button, Divider } from "antd";
+import { Input, Form, Button, Divider, Select } from "antd";
 import { useState } from "react";
 import { getMeta } from "../util/get-meta";
 import { DownloadOutlined } from "@ant-design/icons";
 import { getHolders } from "../util/get-holders";
+import { clusterApiUrl } from "@solana/web3.js";
+
+const { Option } = Select;
+
+export const ENDPOINTS = [
+  {
+    name: "Metaplex",
+    endpoint: "https://api.metaplex.solana.com/",
+  },
+  {
+    name: "Solana",
+    endpoint: "https://api.mainnet-beta.solana.com",
+  },
+  {
+    name: "Serum",
+    endpoint: "https://solana-api.projectserum.com",
+  },
+  {
+    name: "testnet",
+    endpoint: clusterApiUrl("testnet"),
+  },
+  {
+    name: "devnet",
+    endpoint: clusterApiUrl("devnet"),
+  },
+];
+
+
 
 const { TextArea } = Input;
 export default function Home() {
@@ -18,11 +45,25 @@ export default function Home() {
   const [counter, setCounter] = useState(0);
   const router = useRouter();
   const [selectedKeys, setSelectedKeys] = useState(["meta"]);
+  const [endpoint, setEndpoint] = useState(
+    "https://solana-api.projectserum.com"
+  );
   const setRoute = (route) => {
     router.push({ query: { mode: route } });
     setSelectedKeys([route]);
   };
 
+  const SelectNetwork = () => {
+    return (
+      <Select defaultValue={ENDPOINTS.find(e => e.endpoint === endpoint).name} onChange={e => setEndpoint(e as string)} style={{minWidth: 200}}>
+        {ENDPOINTS.map((ep) => (
+          <Option key={ep.name} value={ep.endpoint}>
+            {ep.name}
+          </Option>
+        ))}
+      </Select>
+    );
+  };
   const GibMeta = () => {
     return (
       <main className={styles.main}>
@@ -35,6 +76,11 @@ export default function Home() {
           It will return an object with resolved arweave metadata as well as the
           metadata associated with the token itself.
         </p>
+
+        <Divider />
+        <label>Select RPC</label>
+        <br />
+        <SelectNetwork/>
         <Divider />
 
         <Form
@@ -92,7 +138,7 @@ export default function Home() {
             style={{ margin: "0 auto", display: "block" }}
             onClick={() => {
               setLoading(true);
-              getMeta(jsonVal, setCounter)
+              getMeta(jsonVal, setCounter, endpoint)
                 .then(() => {
                   setLoading(false);
                 })
@@ -117,9 +163,13 @@ export default function Home() {
         <img src="/sol-logo.jpeg" alt="Solana Logo" />
         <Divider />
         <p>
-          Gib-Holders serves one purpose: To gib you holders from Solana Mint IDs.
-          It will return an object with holders, mints and amounts.
+          Gib-Holders serves one purpose: To gib you holders from Solana Mint
+          IDs. It will return an object with holders, mints and amounts.
         </p>
+        <Divider />
+        <label>Select RPC</label>
+        <br />
+        <SelectNetwork/>
         <Divider />
 
         <Form
@@ -177,7 +227,7 @@ export default function Home() {
             style={{ margin: "0 auto", display: "block" }}
             onClick={() => {
               setLoading(true);
-              getHolders(jsonVal, setCounter)
+              getHolders(jsonVal, setCounter, endpoint)
                 .then(() => {
                   setLoading(false);
                 })
@@ -192,7 +242,7 @@ export default function Home() {
         </Form>
       </main>
     );
-  }
+  };
 
   return (
     <>
@@ -215,8 +265,8 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        {selectedKeys[0] === 'meta' &&  <GibMeta />}
-        {selectedKeys[0] === 'holders' &&  <GibHolders />}
+        {selectedKeys[0] === "meta" && <GibMeta />}
+        {selectedKeys[0] === "holders" && <GibHolders />}
 
         <footer className={styles.footer}>
           <div

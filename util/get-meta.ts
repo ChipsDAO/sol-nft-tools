@@ -110,9 +110,7 @@ const BPF_UPGRADE_LOADER_ID = new PublicKey(
   "BPFLoaderUpgradeab1e11111111111111111111111"
 );
 
-const MEMO_ID = new PublicKey(
-  "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
-);
+const MEMO_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr");
 
 const METADATA_PROGRAM_ID =
   "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s" as StringPublicKey;
@@ -127,7 +125,6 @@ const METAPLEX_ID =
   "p1exdMJcjVao65QdewkaZRUnU6VPSXhus9n2GzWfh98" as StringPublicKey;
 
 const SYSTEM = new PublicKey("11111111111111111111111111111111");
-
 
 const METADATA_SCHEMA = new Map<any, any>([
   [
@@ -283,45 +280,53 @@ async function fetchMetadataFromPDA(pubkey: PublicKey, url: string) {
   return metadataInfo;
 }
 
-
 const mints = [];
-const createJsonObject = async (key: string): Promise<unknown> => {
-  const tokenMetadata = await getMetadata(
-    new anchor.web3.PublicKey(key),
-    anchor.web3.clusterApiUrl("mainnet-beta")
-  );
-  const arweaveData = await fetch(tokenMetadata.data.uri).then((res) => res.json());
-  mints.push({
-    tokenData: {
-      ...tokenMetadata.data,
-      creators: tokenMetadata.data.creators.map((d) => {
-        return {
-          share: d.share,
-          address: new PublicKey(d.address).toBase58(),
-          verified: !!d.verified,
-        };
-      }),
-    },
-    metadata: arweaveData,
-    mint: key,
-  });
-  return await new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(undefined);
-    }, 150);
-  });
-};
+const createJsonObject =
+  (url: string) =>
+  async (key: string): Promise<unknown> => {
+    const tokenMetadata = await getMetadata(
+      new anchor.web3.PublicKey(key),
+      anchor.web3.clusterApiUrl("mainnet-beta")
+    );
+    const arweaveData = await fetch(tokenMetadata.data.uri).then((res) =>
+      res.json()
+    );
+    mints.push({
+      tokenData: {
+        ...tokenMetadata.data,
+        creators: tokenMetadata.data.creators.map((d) => {
+          return {
+            share: d.share,
+            address: new PublicKey(d.address).toBase58(),
+            verified: !!d.verified,
+          };
+        }),
+      },
+      metadata: arweaveData,
+      mint: key,
+    });
+    return await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(undefined);
+      }, 150);
+    });
+  };
 
-
-export const getMeta = (tokens: string[], setCounter) => {
-  return resolveSequentially(tokens, createJsonObject, setCounter).then(function () {
-    download(
-      "mint-data-" + Date.now() + ".json",
-      jsonFormat(mints, {
-        type: "space",
-        size: 2,
-      })
+export const getMeta = (
+  tokens: string[],
+  setCounter: (a: any) => void,
+  url: string
+) => {
+  return resolveSequentially(tokens, createJsonObject(url), setCounter).then(
+    function () {
+      download(
+        "mint-data-" + Date.now() + ".json",
+        jsonFormat(mints, {
+          type: "space",
+          size: 2,
+        })
       );
       mints.forEach(() => mints.shift());
-  });
+    }
+  );
 };

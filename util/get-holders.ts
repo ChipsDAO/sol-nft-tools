@@ -2,8 +2,8 @@ import jsonFormat from 'json-format';
 import { download } from './download';
 import { resolveSequentially } from './resolve-sequentially';
 let holders = {};
-const getTokenHolder = key => {
-  return fetch('https://solana-api.projectserum.com', {
+const getTokenHolder = url => key => {
+  return fetch(url, {
     body: `{
         "jsonrpc":"2.0", 
         "id":1, 
@@ -30,7 +30,11 @@ const getTokenHolder = key => {
       "Content-Type": "application/json"
     },
     method: "POST"
-  }).then(res => res.json()).then(async res => {
+  }).then(res => {
+
+    debugger;
+    return res.json()
+  }).then(async res => {
     res.result.forEach((r) => {
       if (r.account.data.parsed.info.tokenAmount.uiAmount > 0) {
         if (!holders[r.account.data.parsed.info.owner]) {
@@ -47,8 +51,9 @@ const getTokenHolder = key => {
   })
 };
 
-export const getHolders = (mintIds: string[], setCounter) => {
-  return resolveSequentially(mintIds, getTokenHolder, setCounter).then(() => {
+export const getHolders = (mintIds: string[], setCounter, url) => {
+  return resolveSequentially(mintIds, getTokenHolder(url), setCounter).then(() => {
+    debugger
     download(`token-holders-${Date.now()}.json`, jsonFormat(holders, {
       type: "space",
       size: 2,
