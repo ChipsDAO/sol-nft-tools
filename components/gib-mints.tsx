@@ -41,7 +41,7 @@ export const GibMints = ({endpoint}) => {
           form={form}
           name="mintIds"
           initialValues={{
-            mintIds: [],
+            mintIds: '',
           }}
           scrollToFirstError
           className={`${styles["full-width"]} ${styles["d-flex"]} ${styles["flex-col"]}`}
@@ -52,7 +52,7 @@ export const GibMints = ({endpoint}) => {
           <Form.Item
             name="mintIds"
             rules={[
-              keyValidator
+              keyValidator(setJsonVal)
             ]}
           >
             <TextArea
