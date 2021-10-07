@@ -53,12 +53,14 @@ export default function Home() {
     setSelectedKeys([route]);
   };
 
+  const DEFAULT = `${ENDPOINTS.find(e => e.endpoint === endpoint).name} (${ENDPOINTS.find(e => e.endpoint === endpoint).endpoint})`
+
   const SelectNetwork = () => {
     return (
-      <Select defaultValue={ENDPOINTS.find(e => e.endpoint === endpoint).name} onChange={e => setEndpoint(e as string)} style={{minWidth: 200}}>
+      <Select defaultValue={DEFAULT} onChange={e => setEndpoint(e as string)} style={{minWidth: 200}}>
         {ENDPOINTS.map((ep) => (
           <Option key={ep.name} value={ep.endpoint}>
-            {ep.name}
+            {ep.name} ({ep.endpoint})
           </Option>
         ))}
       </Select>
@@ -104,7 +106,6 @@ export default function Home() {
             rules={[
               () => ({
                 validator(_, value) {
-                  console.log(value);
                   try {
                     const val = JSON.parse(value);
                     if (!val.length) {
