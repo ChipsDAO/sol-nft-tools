@@ -312,7 +312,7 @@ export default function Home() {
       <Menu
         mode="horizontal"
         selectedKeys={selectedKeys}
-        style={{ justifyContent: "center" }}
+        style={{ justifyContent: "center", position: 'fixed', left: 0, right: 0, top: 0 }}
       >
         <Menu.Item onClick={() => setRoute("mints")} key="mints">
           Gib Mints
