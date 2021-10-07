@@ -26,7 +26,7 @@ export default function Home() {
   const GibMeta = () => {
     return (
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Solana Toolbox</h1>
+        <h1 className={styles.title}>Welcome to Solana NFT Toolbox</h1>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/sol-logo.jpeg" alt="Solana Logo" />
         <Divider />
@@ -112,7 +112,7 @@ export default function Home() {
   const GibHolders = () => {
     return (
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Solana Toolbox</h1>
+        <h1 className={styles.title}>Welcome to Solana NFT Toolbox</h1>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/sol-logo.jpeg" alt="Solana Logo" />
         <Divider />
@@ -210,7 +210,7 @@ export default function Home() {
       </Menu>
       <div className={styles.container}>
         <Head>
-          <title>Solana Toolbox</title>
+          <title>Solana NFT Toolbox</title>
           <meta name="description" content="grab metadata from SOL NFTs" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
