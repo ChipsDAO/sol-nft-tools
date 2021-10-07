@@ -5,6 +5,7 @@ import * as anchor from "@project-serum/anchor";
 export const METADATA_PREFIX = "metadata";
 import jsonFormat from "json-format";
 import { resolveSequentially } from "./resolve-sequentially";
+import { download } from "./download";
 
 class Creator {
   address: PublicKey;
@@ -282,21 +283,6 @@ async function fetchMetadataFromPDA(pubkey: PublicKey, url: string) {
   return metadataInfo;
 }
 
-function download(filename, text) {
-  const element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(text)
-  );
-  element.setAttribute("download", filename);
-
-  element.style.display = "none";
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
-}
 
 const mints = [];
 const createJsonObject = async (key: string): Promise<unknown> => {
