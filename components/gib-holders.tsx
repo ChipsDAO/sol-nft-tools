@@ -57,7 +57,7 @@ export const GibHolders = ({endpoint}) => {
         <Form.Item
           name="holders"
           rules={[
-            jsonValidator(setCounter)
+            jsonValidator(setJsonVal)
           ]}
         >
           <TextArea

@@ -2,9 +2,9 @@ import { Menu } from "antd";
 import { useRouter } from "next/router";
 import { Divider, Select, notification } from "antd";
 import { useEffect, useState } from "react";
-import {GibHolders} from '../components/gib-holders';
-import {GibMints} from '../components/gib-mints';
-import {GibMeta} from '../components/gib-meta';
+import { GibHolders } from '../components/gib-holders';
+import { GibMints } from '../components/gib-mints';
+import { GibMeta } from '../components/gib-meta';
 import styles from "../styles/Home.module.css";
 import { ENDPOINTS } from "../util/endpoints";
 
@@ -13,10 +13,10 @@ const { Option } = Select;
 export default function Home() {
   const router = useRouter();
   const [selectedKeys, setSelectedKeys] = useState([
-    (router.query?.mode as string) || "mints",
+    (router.query?.mode as string) || 'mints',
   ]);
   const [endpoint, setEndpoint] = useState(
-    "https://solana-api.projectserum.com"
+    'https://solana-api.projectserum.com'
   );
   const setRoute = (route) => {
     router.push({ query: { mode: route } });
@@ -29,8 +29,8 @@ export default function Home() {
     }
   }, [router.query?.mode]);
 
-  const DEFAULT = `${ENDPOINTS.find((e) => e.endpoint === endpoint).name} (${ENDPOINTS.find((e) => e.endpoint === endpoint).endpoint
-    })`;
+  const DEFAULT = `${ENDPOINTS.find((e) => e.endpoint === endpoint).name} ` +
+    `(${ENDPOINTS.find((e) => e.endpoint === endpoint).endpoint})`;
 
   const SelectNetwork = () => {
     return (
@@ -55,6 +55,7 @@ export default function Home() {
     );
     notification.open({
       message: "Copied to clipboard!",
+      duration: 2000
     });
   };
 
@@ -63,7 +64,7 @@ export default function Home() {
       <Menu
         mode="horizontal"
         selectedKeys={selectedKeys}
-        className={`${styles.menu}`}
+        className={styles.menu}
       >
         <Menu.Item onClick={() => setRoute("mints")} key="mints">
           Gib Mints
