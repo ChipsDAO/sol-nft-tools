@@ -74,6 +74,15 @@ export default function Home() {
       });
   };
 
+  const keyValidator = () => ({
+    validator(_, value) {
+      if (value?.length !== 44) {
+        return Promise.reject(new Error(`Invalid key length! Is ${value?.length}, should be 44.`));
+      }
+      Promise.resolve(value);
+    },
+  })
+
   const GibMints = () => {
     return (
       <>
@@ -89,11 +98,7 @@ export default function Home() {
             mintIds: [],
           }}
           scrollToFirstError
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
+          className={`${styles["full-width"]} ${styles["d-flex"]} ${styles["flex-col"]}`}
         >
           <label style={{ marginBottom: "2rem" }}>
             Please gib SOL address to get all mints
@@ -101,16 +106,7 @@ export default function Home() {
           <Form.Item
             name="mintIds"
             rules={[
-              () => ({
-                validator(_, value) {
-                  try {
-                    setJsonVal(value);
-                    Promise.resolve(value);
-                  } catch (e) {
-                    return Promise.reject(new Error("Invalid JSON!"));
-                  }
-                },
-              }),
+              keyValidator
             ]}
           >
             <TextArea
@@ -130,7 +126,7 @@ export default function Home() {
             style={{ margin: "0 auto", display: "block" }}
             onClick={() => fetchMints()}
           >
-            {loading ? `Getting Mints..` : "Gib Mints!"}
+            {loading ? 'Getting Mints..' : "Gib Mints!"}
           </Button>
         </Form>
       </>
@@ -140,7 +136,6 @@ export default function Home() {
 
   const jsonValidator = () => ({
     validator(_, value) {
-      console.log(value);
       try {
         const val = JSON.parse(value);
         if (!val.length) {
@@ -205,9 +200,7 @@ export default function Home() {
           </label>
           <Form.Item
             name="mintIds"
-            rules={[
-              jsonValidator
-            ]}
+            rules={[ jsonValidator ]}
           >
             <TextArea
               rows={4}
