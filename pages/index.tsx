@@ -9,6 +9,7 @@ import { getMeta } from "../util/get-meta";
 import { DownloadOutlined } from "@ant-design/icons";
 import { getHolders } from "../util/get-holders";
 import { clusterApiUrl } from "@solana/web3.js";
+import { getMints } from "../util/get-mints";
 
 const { Option } = Select;
 
@@ -57,7 +58,7 @@ export default function Home() {
 
   const SelectNetwork = () => {
     return (
-      <Select defaultValue={DEFAULT} onChange={e => setEndpoint(e as string)} style={{minWidth: 200}}>
+      <Select defaultValue={DEFAULT} onChange={e => setEndpoint(e as string)} style={{ minWidth: 200 }}>
         {ENDPOINTS.map((ep) => (
           <Option key={ep.name} value={ep.endpoint}>
             {ep.name} ({ep.endpoint})
@@ -66,23 +67,87 @@ export default function Home() {
       </Select>
     );
   };
+  const GibMints = () => {
+    return (
+      <>
+        <p>
+          Gib-Mints serves one purpose: To gib you mints from Solana address.
+        </p>
+        <Divider />
+
+        <Form
+          form={form}
+          name="mintIds"
+          initialValues={{
+            mintIds: [],
+          }}
+          scrollToFirstError
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <label style={{ marginBottom: "2rem" }}>
+            Please gib SOL address to get all mints
+          </label>
+          <Form.Item
+            name="mintIds"
+            rules={[
+              () => ({
+                validator(_, value) {
+                  try {
+                    setJsonVal(value);
+                    Promise.resolve(value);
+                  } catch (e) {
+                    debugger
+                    return Promise.reject(new Error("Invalid JSON!"));
+                  }
+                },
+              }),
+            ]}
+          >
+            <TextArea
+              rows={1}
+              className={styles.card}
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+
+          <Button
+            type="primary"
+            loading={loading}
+            shape="round"
+            disabled={!jsonVal || !jsonVal.length}
+            icon={<DownloadOutlined />}
+            size="large"
+            style={{ margin: "0 auto", display: "block" }}
+            onClick={() => {
+              setLoading(true);
+              getMints(jsonVal, endpoint)
+                .then(() => {
+                  setLoading(false);
+                })
+                .catch((e) => {
+                  alert(e);
+                  setLoading(false);
+                });
+            }}
+          >
+            {loading ? `Getting Mints..` : "Gib Mints!"}
+          </Button>
+        </Form>
+      </>
+    );
+  }
   const GibMeta = () => {
     return (
-      <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Solana NFT Toolbox</h1>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/sol-logo.jpeg" alt="Solana Logo" />
-        <Divider />
+      <>
         <p>
           Gib-Meta serves one purpose: To gib you metadata from Solana Mint IDs.
           It will return an object with resolved arweave metadata as well as the
           metadata associated with the token itself.
         </p>
-
-        <Divider />
-        <label>Select RPC</label>
-        <br />
-        <SelectNetwork/>
         <Divider />
 
         <Form
@@ -152,25 +217,19 @@ export default function Home() {
             {loading ? `${counter} / ${jsonVal?.length}` : "Gib Meta!"}
           </Button>
         </Form>
-      </main>
+      </>
     );
   };
 
   const GibHolders = () => {
     return (
-      <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Solana NFT Toolbox</h1>
+      <>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/sol-logo.jpeg" alt="Solana Logo" />
-        <Divider />
+
         <p>
           Gib-Holders serves one purpose: To gib you holders from Solana Mint
           IDs. It will return an object with holders, mints and amounts.
         </p>
-        <Divider />
-        <label>Select RPC</label>
-        <br />
-        <SelectNetwork/>
         <Divider />
 
         <Form
@@ -241,7 +300,7 @@ export default function Home() {
             {loading ? `${counter} / ${jsonVal?.length}` : "Gib Holders!"}
           </Button>
         </Form>
-      </main>
+      </>
     );
   };
 
@@ -258,6 +317,9 @@ export default function Home() {
         <Menu.Item onClick={() => setRoute("holders")} key="holders">
           Gib Holders
         </Menu.Item>
+        <Menu.Item onClick={() => setRoute("mints")} key="mints">
+          Gib Mints
+        </Menu.Item>
       </Menu>
       <div className={styles.container}>
         <Head>
@@ -266,9 +328,27 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        {selectedKeys[0] === "meta" && <GibMeta />}
-        {selectedKeys[0] === "holders" && <GibHolders />}
-
+        <main className={styles.main}>
+          <h1 className={styles.title}>Solana NFT Toolbox</h1>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/sol-logo.jpeg" alt="Solana Logo" style={{width: 240}} />
+          <div style={{
+            maxWidth: 800,
+            margin: '0 auto'
+          }}>
+            <Divider />
+            <div style={{textAlign: 'center'}}>
+              <label>Select RPC</label>
+              <br />
+              <br />
+              <SelectNetwork />
+            </div>
+            <Divider />
+            {selectedKeys[0] === "meta" && <GibMeta />}
+            {selectedKeys[0] === "holders" && <GibHolders />}
+            {selectedKeys[0] === "mints" && <GibMints />}
+          </div>
+        </main>
         <footer className={styles.footer}>
           <div
             style={{
