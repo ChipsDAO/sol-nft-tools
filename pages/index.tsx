@@ -1,10 +1,9 @@
 import Head from "next/head";
-import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { Menu } from "antd";
 import { useRouter } from "next/router";
 import { Input, Form, Button, Divider, Select } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getMeta } from "../util/get-meta";
 import { DownloadOutlined } from "@ant-design/icons";
 import { getHolders } from "../util/get-holders";
@@ -45,7 +44,8 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
   const router = useRouter();
-  const [selectedKeys, setSelectedKeys] = useState(["meta"]);
+  console.log(router.query?.mode)
+  const [selectedKeys, setSelectedKeys] = useState([router.query?.mode as string || 'mints']);
   const [endpoint, setEndpoint] = useState(
     "https://solana-api.projectserum.com"
   );
@@ -53,6 +53,10 @@ export default function Home() {
     router.push({ query: { mode: route } });
     setSelectedKeys([route]);
   };
+
+  useEffect(() => {
+    setSelectedKeys([router.query?.mode as string])
+  }, [router.query?.mode])
 
   const DEFAULT = `${ENDPOINTS.find(e => e.endpoint === endpoint).name} (${ENDPOINTS.find(e => e.endpoint === endpoint).endpoint})`
 
@@ -311,14 +315,14 @@ export default function Home() {
         selectedKeys={selectedKeys}
         style={{ justifyContent: "center" }}
       >
+        <Menu.Item onClick={() => setRoute("mints")} key="mints">
+          Gib Mints
+        </Menu.Item>
         <Menu.Item onClick={() => setRoute("meta")} key="meta">
           Gib Meta
         </Menu.Item>
         <Menu.Item onClick={() => setRoute("holders")} key="holders">
           Gib Holders
-        </Menu.Item>
-        <Menu.Item onClick={() => setRoute("mints")} key="mints">
-          Gib Mints
         </Menu.Item>
       </Menu>
       <div className={styles.container}>
