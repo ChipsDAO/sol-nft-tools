@@ -1,7 +1,7 @@
 import { Menu } from "antd";
 import { useRouter } from "next/router";
-import { Divider, Select, notification } from "antd";
-import { useEffect, useState } from "react";
+import { Divider, Select, notification, Space } from "antd";
+import { useEffect, useRef, useState } from "react";
 import { GibHolders } from '../components/gib-holders';
 import { GibMints } from '../components/gib-mints';
 import { GibMeta } from '../components/gib-meta';
@@ -12,6 +12,7 @@ const { Option } = Select;
 
 export default function Home() {
   const router = useRouter();
+  const rightMenuRef = useRef();
   const [selectedKeys, setSelectedKeys] = useState([
     (router.query?.mode as string) || 'mints',
   ]);
@@ -27,6 +28,8 @@ export default function Home() {
     if (router.query?.mode) {
       setSelectedKeys([router.query?.mode as string]);
     }
+    debugger
+    console.log(rightMenuRef?.current)
   }, [router.query?.mode]);
 
   const DEFAULT = `${ENDPOINTS.find((e) => e.endpoint === endpoint).name} ` +
@@ -66,33 +69,45 @@ export default function Home() {
         selectedKeys={selectedKeys}
         className={styles.menu}
       >
+
+        <Menu.Item style={{ position: 'unset' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo-horizontal-gradient-dark.svg"
+            alt="Solana Logo"
+            className={styles["sol-logo"]}
+            style={{
+              // width: 
+            }}
+          />
+        </Menu.Item>
+
+
         <Menu.Item onClick={() => setRoute("mints")} key="mints">
           Gib Mints
         </Menu.Item>
         <Menu.Item onClick={() => setRoute("meta")} key="meta">
           Gib Meta
         </Menu.Item>
-        <Menu.Item onClick={() => setRoute("holders")} key="holders">
+        <Menu.Item onClick={() => setRoute("holders")}  style={{marginRight: 'auto'}} key="holders">
           Gib Holders
         </Menu.Item>
+
+
+
+        <Menu.Item >
+          <div ref={rightMenuRef}>
+            <SelectNetwork />
+          </div>
+        </Menu.Item>
+
       </Menu>
       <div className={styles.container}>
         <main className={styles.main}>
-          <h1 className={styles.title}>Solana NFT Toolbox</h1>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/sol-logo.jpeg"
-            alt="Solana Logo"
-            className={styles["sol-logo"]}
-          />
+          <h2 className={styles.title}>{
+            `GIB ${selectedKeys[0].toUpperCase()}!`
+          }</h2>
           <div className={styles["inner-container"]}>
-            <Divider />
-            <div style={{ textAlign: "center" }}>
-              <label>Select RPC</label>
-              <br />
-              <br />
-              <SelectNetwork />
-            </div>
             <Divider />
             {selectedKeys[0] === "meta" && <GibMeta endpoint={endpoint} />}
             {selectedKeys[0] === "holders" && <GibHolders endpoint={endpoint} />}
