@@ -79,7 +79,8 @@ export default function Home() {
       if (value?.length !== 44) {
         return Promise.reject(new Error(`Invalid key length! Is ${value?.length}, should be 44.`));
       }
-      Promise.resolve(value);
+      setJsonVal(value);
+      return Promise.resolve(value);
     },
   })
 
