@@ -276,15 +276,17 @@ export default function Home() {
               gap: "2rem",
             }}
           >
-            <span style={{ display: "inline-block" }}>
+            <span style={{ display: "inline-block", textAlign: 'center' }}>
               Made by{" "}
               <a
                 target="_blank"
                 rel="noreferrer"
-                href="https://twitter.com/0xAlice_"
+                href="https://y.at/%E2%99%A0%E2%9D%A4%F0%9F%90%B0%F0%9F%90%B1"
               >
                 Alice
               </a>
+              Tip Address (SOL) <br />
+               DSmbnj9t7CCQdAZfvYe3PNbJB7CrVXpa29iW3VkgpEEZ
             </span>
           </div>
         </footer>
