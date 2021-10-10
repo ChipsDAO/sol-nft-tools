@@ -286,7 +286,7 @@ const createJsonObject =
   async (key: string): Promise<unknown> => {
     const tokenMetadata = await getMetadata(
       new anchor.web3.PublicKey(key),
-      anchor.web3.clusterApiUrl("mainnet-beta")
+      url
     );
     const arweaveData = await fetch(tokenMetadata.data.uri).then((res) =>
       res.json()
