@@ -108,7 +108,6 @@ export default function ARUpload() {
     );
 
     setLoading(false);
-    debugger;
     download(`AR-upload-${Date.now()}.json`, jsonFormat(res));
   };
 
@@ -125,7 +124,6 @@ export default function ARUpload() {
 
   const handleFiles = async (_files: File[]) => {
     const loaded = await Promise.all(_files.map((f) => fileToBuffer(f)));
-    debugger;
     setFiles(loaded);
   };
 
