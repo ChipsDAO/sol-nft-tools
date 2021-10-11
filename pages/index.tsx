@@ -96,7 +96,7 @@ export default function Home() {
           style={{ marginRight: "auto" }}
           key="ar-links"
         >
-          Gib AR-Links
+          Gib AR-Links (Beta)
         </Menu.Item>
 
         <Menu.Item>
