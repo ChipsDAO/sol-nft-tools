@@ -42,12 +42,10 @@ const fileToBuffer = (
     reader.readAsArrayBuffer(file);
   });
 };
-export const generateArweaveWallet = () => {
-  const w = arweave.wallets.generate();
-  return w.then((key) => {
-    localStorage.setItem("arweave-key", JSON.stringify(key));
-    return key;
-  });
+export const generateArweaveWallet = async () => {
+  const key = await arweave.wallets.generate();
+  localStorage.setItem("arweave-key", JSON.stringify(key));
+  return key;
 };
 
 export const getKeyForJwk = (jwk) => arweave.wallets.jwkToAddress(jwk);
@@ -61,15 +59,12 @@ export default function ARUpload() {
 
   useEffect(() => {
     const generate = () =>
-      generateArweaveWallet()
-        .then((jwk) => {
-          setJwk(jwk);
-          return jwk;
-        })
-        .then(async (jwk) => {
-          const a = await getKeyForJwk(jwk);
-          setAddress(a);
-        });
+      generateArweaveWallet().then(async (jwk) => {
+        setJwk(jwk);
+        const a = await getKeyForJwk(jwk);
+        setAddress(a);
+      });
+
     const previousKey = localStorage.getItem("arweave-key");
     if (previousKey) {
       if (!address) {
@@ -135,7 +130,7 @@ export default function ARUpload() {
       </p>
       <p>
         Send some AR to this wallet to start uploading. You can download and
-        empty the wallet later.
+        empty the wallet later. You can get AR on <a href="https://binance.com" target="_blank" rel="noopener noreferrer">Binance</a>
       </p>
       <Divider />
 
@@ -149,7 +144,7 @@ export default function ARUpload() {
                   notification.open({ message: "Copied to clipboard!" })
                 }
               >
-                <a style={{marginRight: '1rem'}}>Copy Address</a>
+                <a style={{ marginRight: "1rem" }}>Copy Address</a>
               </CopyToClipboard>
               <a
                 onClick={() => download(`AR-${address}.json`, jsonFormat(jwk))}
@@ -161,7 +156,14 @@ export default function ARUpload() {
           title="Wallet"
         >
           <p>Address: {address}</p>
-          <p>Balance: {balance === 'none' ? <Spin style={{marginLeft: '1rem'}}/> : balance}</p>
+          <p>
+            Balance:{" "}
+            {balance === "none" ? (
+              <Spin style={{ marginLeft: "1rem" }} />
+            ) : (
+              balance
+            )}
+          </p>
           <Divider />
           <FileUpload setFiles={handleFiles} />
         </Card>
