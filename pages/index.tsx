@@ -1,8 +1,7 @@
 import { Menu } from "antd";
 import { useRouter } from "next/router";
-import { Divider, Select, notification, Space } from "antd";
+import { Divider, Select, notification } from "antd";
 import { useEffect, useRef, useState } from "react";
-import  {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { GibHolders } from "../components/gib-holders";
 import { GibMints } from "../components/gib-mints";
 import { GibMeta } from "../components/gib-meta";
