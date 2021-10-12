@@ -2,6 +2,7 @@ import { Menu } from "antd";
 import { useRouter } from "next/router";
 import { Divider, Select, notification, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
+import  {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { GibHolders } from "../components/gib-holders";
 import { GibMints } from "../components/gib-mints";
 import { GibMeta } from "../components/gib-meta";
@@ -121,17 +122,25 @@ export default function Home() {
           </div>
         </main>
         <footer className={styles.footer}>
-          <span>
-            Made by
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://y.at/%E2%99%A0%E2%9D%A4%F0%9F%90%B0%F0%9F%90%B1"
-            >
-              Alice{" "}
-            </a>
+          <span style={{width: '100%'}}>
+            <span>
+              Made by
+              <a
+                style={{display: 'block'}}
+                target="_blank"
+                rel="noreferrer"
+                href="https://y.at/%E2%99%A0%E2%9D%A4%F0%9F%90%B0%F0%9F%90%B1"
+              >
+                Alice{" "}
+              </a>
+            </span>
           </span>
-          <span className={styles["text-right"]}>
+          <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 32}}>
+            <a href="https://github.com/21e8/sol-nft-tools"><i className="fab fa-github" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
+            <a href="https://twitter.com/0xAlice_"><i className="fab fa-twitter" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
+            <a href="https://discord.gg/JAU4e7Zf"><i className="fab fa-discord" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
+          </div>
+          <span style={{width: '100%'}} className={styles["text-right"]}>
             Tip Address (SOL) <br />
             <span
               onClick={() => copyAddress()}
