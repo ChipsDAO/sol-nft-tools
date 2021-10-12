@@ -2,7 +2,7 @@ import styles from "../styles/Home.module.css";
 import React, { useState } from "react";
 import { DownloadOutlined } from "@ant-design/icons";
 import { Divider, Form, Button, Input, notification } from "antd";
-import { keyValidator } from "../util/validators";
+import { solAddressValidator } from "../util/validators";
 import { getMints } from "../util/get-mints";
 
 const { TextArea } = Input;
@@ -52,7 +52,7 @@ export const GibMints = ({endpoint}) => {
           <Form.Item
             name="mintIds"
             rules={[
-              keyValidator(setJsonVal)
+              solAddressValidator
             ]}
           >
             <TextArea

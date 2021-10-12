@@ -23,4 +23,13 @@ export const jsonValidator = (setJsonVal) => () => ({
       return Promise.reject(new Error("Invalid JSON!"));
     }
   },
+});
+
+export const SOL_ADDRESS_REGEXP = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
+
+export const solAddressValidator = () => ({
+  validator(_, value) {
+    const isValid = !!(value as string || '').match(SOL_ADDRESS_REGEXP)?.length;
+    return isValid ? Promise.resolve() : Promise.reject(new Error('Invalid Address'));
+  }
 })

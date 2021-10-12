@@ -3,7 +3,7 @@ import { clusterApiUrl } from "@solana/web3.js";
 export const ENDPOINTS = [
   {
     name: "Metaplex",
-    endpoint: "https://api.metaplex.solana.com/",
+    endpoint: "https://api.metaplex.solana.com",
   },
   {
     name: "Solana",
