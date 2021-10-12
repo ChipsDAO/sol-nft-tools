@@ -135,9 +135,9 @@ export default function Home() {
             </span>
           </span>
           <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 32}}>
-            <a href="https://github.com/21e8/sol-nft-tools"><i className="fab fa-github" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
-            <a href="https://twitter.com/0xAlice_"><i className="fab fa-twitter" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
-            <a href="https://discord.gg/JAU4e7Zf"><i className="fab fa-discord" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/21e8/sol-nft-tools"><i className="fab fa-github" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
+            <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/0xAlice_"><i className="fab fa-twitter" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
+            <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/JAU4e7Zf"><i className="fab fa-discord" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
           </div>
           <span style={{width: '100%'}} className={styles["text-right"]}>
             Tip Address (SOL) <br />
