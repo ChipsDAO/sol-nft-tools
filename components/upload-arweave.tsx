@@ -92,7 +92,7 @@ export default function ARUpload() {
           { data: f.buffer },
           jwk
         );
-        transaction.addTag("Content-Type", f.type);
+        transaction.addTag("Content-Type", f.file.type);
         await arweave.transactions.sign(transaction, jwk);
         await uploadToArweave(transaction);
         return {
