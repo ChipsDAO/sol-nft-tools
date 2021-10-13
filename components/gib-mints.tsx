@@ -9,15 +9,17 @@ const { TextArea } = Input;
 export const GibMints = ({endpoint}) => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false);
-    const [jsonVal, setJsonVal] = useState(undefined);
+    const [addressField, setAddressField] = useState<any>(undefined);
     const fetchMints = () => {
       notification.open({
         message: "Downloading your data.",
         key: "downloading",
         duration: 0,
       });
+      const mintIds = form.getFieldValue('mintIds');
+
       setLoading(true);
-      getMints(jsonVal, endpoint)
+      getMints(addressField.value, endpoint)
         .then(() => {
           setLoading(false);
         })
@@ -43,6 +45,10 @@ export const GibMints = ({endpoint}) => {
           initialValues={{
             mintIds: '',
           }}
+          onFieldsChange={(_, allFields) => {
+            setAddressField(allFields[0])
+            allFields[0].errors
+          }}
           scrollToFirstError
           className={`${styles["full-width"]} ${styles["d-flex"]} ${styles["flex-col"]}`}
         >
@@ -66,7 +72,7 @@ export const GibMints = ({endpoint}) => {
             type="primary"
             loading={loading}
             shape="round"
-            disabled={!jsonVal || !jsonVal.length}
+            disabled={addressField?.errors?.length || !addressField}
             icon={<DownloadOutlined />}
             size="large"
             style={{ margin: "0 auto", display: "block" }}
