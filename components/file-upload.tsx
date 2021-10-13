@@ -9,19 +9,7 @@ const props = {
   name: "file",
   multiple: true,
   onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      setFiles(info.fileList.map(f => f.originFileObj));
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
+    setFiles(info.fileList.map(f => f.originFileObj));
   },
 };
 

@@ -1,6 +1,6 @@
 import Arweave from "arweave";
 import { JWKInterface } from "arweave/node/lib/wallet";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Divider, Button, Card, notification, Spin } from "antd";
 import { FileUpload } from "./file-upload";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -84,7 +84,7 @@ export default function ARUpload() {
     }
   }, [address, jwk]);
 
-  const upload = async () => {
+  const upload = useCallback(async () => {
     setLoading(true);
     const res = await Promise.all(
       files.map(async (f) => {
@@ -104,7 +104,14 @@ export default function ARUpload() {
 
     setLoading(false);
     download(`AR-upload-${Date.now()}.json`, jsonFormat(res));
-  };
+  }, [files, jwk]);
+
+  const downloadKey = useCallback(() => {
+    if (!jwk || !address) {
+      return
+    }
+    download(`AR-${address}.json`, jsonFormat(jwk));
+  }, [address, jwk])
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -117,10 +124,10 @@ export default function ARUpload() {
     return () => clearInterval(interval);
   }, [address, balance]);
 
-  const handleFiles = async (_files: File[]) => {
+  const handleFiles = useCallback(async (_files: File[]) => {
     const loaded = await Promise.all(_files.map((f) => fileToBuffer(f)));
     setFiles(loaded);
-  };
+  }, []);
 
   return (
     <>
@@ -130,7 +137,10 @@ export default function ARUpload() {
       </p>
       <p>
         Send some AR to this wallet to start uploading. You can download and
-        empty the wallet later. You can get AR on <a href="https://binance.com" target="_blank" rel="noopener noreferrer">Binance</a>
+        empty the wallet later. You can get AR on{" "}
+        <a href="https://binance.com" target="_blank" rel="noopener noreferrer">
+          Binance
+        </a>
       </p>
       <Divider />
 
@@ -147,7 +157,7 @@ export default function ARUpload() {
                 <a style={{ marginRight: "1rem" }}>Copy Address</a>
               </CopyToClipboard>
               <a
-                onClick={() => download(`AR-${address}.json`, jsonFormat(jwk))}
+                onClick={downloadKey}
               >
                 Download Wallet
               </a>
@@ -179,7 +189,7 @@ export default function ARUpload() {
         icon={<DownloadOutlined />}
         size="large"
         style={{ margin: "0 auto", display: "block" }}
-        onClick={() => upload()}
+        onClick={upload}
       >
         {loading ? "Uploading..." : "Gib AR Links!"}
       </Button>
