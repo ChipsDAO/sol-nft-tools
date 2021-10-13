@@ -1,7 +1,7 @@
 import Arweave from "arweave";
 import { JWKInterface } from "arweave/node/lib/wallet";
 import { useCallback, useEffect, useState } from "react";
-import { Divider, Button, Card, notification, Spin } from "antd";
+import { Divider, Button, Card, notification, Spin, Input } from "antd";
 import { FileUpload } from "./file-upload";
 import { DownloadOutlined } from "@ant-design/icons";
 import { download } from "../util/download";
@@ -57,14 +57,14 @@ export default function ARUpload() {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const generate = () =>
-      generateArweaveWallet().then(async (jwk) => {
-        setJwk(jwk);
-        const a = await getKeyForJwk(jwk);
-        setAddress(a);
-      });
+  const generate = () =>
+    generateArweaveWallet().then(async (jwk) => {
+      setJwk(jwk);
+      const a = await getKeyForJwk(jwk);
+      setAddress(a);
+    });
 
+  useEffect(() => {
     const previousKey = localStorage.getItem("arweave-key");
     if (previousKey) {
       if (!address) {
@@ -79,8 +79,6 @@ export default function ARUpload() {
           generate();
         }
       }
-    } else {
-      generate();
     }
   }, [address, jwk]);
 
@@ -108,10 +106,10 @@ export default function ARUpload() {
 
   const downloadKey = useCallback(() => {
     if (!jwk || !address) {
-      return
+      return;
     }
     download(`AR-${address}.json`, jsonFormat(jwk));
-  }, [address, jwk])
+  }, [address, jwk]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -145,55 +143,80 @@ export default function ARUpload() {
       <Divider />
 
       <div>
-        <Card
-          extra={
-            <>
-              <CopyToClipboard
-                text={address}
-                onCopy={() =>
-                  notification.open({ message: "Copied to clipboard!" })
-                }
-              >
-                <a style={{ marginRight: "1rem" }}>Copy Address</a>
-              </CopyToClipboard>
-              <a
-                onClick={downloadKey}
-              >
-                Download Wallet
-              </a>
-            </>
-          }
-          title="Wallet"
-        >
-          <p>Address: {address}</p>
-          <p>
-            Balance:{" "}
-            {balance === "none" ? (
-              <Spin style={{ marginLeft: "1rem" }} />
-            ) : (
-              balance
-            )}
-          </p>
-          <Divider />
-          <FileUpload setFiles={handleFiles} />
-        </Card>
-      </div>
+        {jwk && (
+          <Card
+            extra={
+              <>
+                <CopyToClipboard
+                  text={address}
+                  onCopy={() =>
+                    notification.open({ message: "Copied to clipboard!" })
+                  }
+                >
+                  <a style={{ marginRight: "1rem" }}>Copy Address</a>
+                </CopyToClipboard>
+                <a onClick={downloadKey}>Download Wallet</a>
+              </>
+            }
+            title="Wallet"
+          >
+            <p>Address: {address}</p>
+            <p>
+              Balance:{" "}
+              {balance === "none" ? (
+                <Spin style={{ marginLeft: "1rem" }} />
+              ) : (
+                balance
+              )}
+            </p>
+            <Divider />
+            <FileUpload setFiles={handleFiles} />
+          </Card>
+        )}
+        {!jwk && (
+          <Card>
+            <h3 style={{ textAlign: "center" }}>No Wallet found.</h3>
+            <br />
+            <Button
+              size="large"
+              style={{ display: "block", margin: "0 auto", minWidth: 320 }}
+              onClick={() => generate()}
+            >
+              Generate Wallet
+            </Button>
+            <br />
+            <div style={{ textAlign: "center" }}>Or</div>
+            <br />
+            <Button
+              size="large"
+              style={{ display: "block", margin: "0 auto", minWidth: 320 }}
+              onClick={() => generate()}
+            >
+              Import Wallet
+            </Button>
+            <Input/>
+          </Card>
+        )}
+      </div> 
 
-      <br />
-
-      <Button
-        type="primary"
-        loading={loading}
-        shape="round"
-        disabled={!files.length}
-        icon={<DownloadOutlined />}
-        size="large"
-        style={{ margin: "0 auto", display: "block" }}
-        onClick={upload}
-      >
-        {loading ? "Uploading..." : "Gib AR Links!"}
-      </Button>
-      <br />
+      {jwk && (
+        <>
+          <br />
+          <Button
+            type="primary"
+            loading={loading}
+            shape="round"
+            disabled={!files.length}
+            icon={<DownloadOutlined />}
+            size="large"
+            style={{ margin: "0 auto", display: "block" }}
+            onClick={upload}
+          >
+            {loading ? "Uploading..." : "Gib AR Links!"}
+          </Button>
+          <br />
+        </>
+      )}
     </>
   );
 }
