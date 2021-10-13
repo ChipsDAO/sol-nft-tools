@@ -26,7 +26,7 @@ const props = {
 };
 
   return (
-    <Dragger {...props}>
+    <Dragger beforeUpload={() => false} {...props}>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
