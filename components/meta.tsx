@@ -13,7 +13,7 @@ export const Meta = () => {
           <meta property="og:site_name" content="Solana NFT Toolbox" />
           <meta
             name="twitter:image"
-            content="https://sol-nft.tools/sol-logo.jpeg"
+            content="https://arweave.net/jeC5bLjY2mY7mZJvnJ1aHTP1zh3oUSMGsalcrUwwJ28"
           />
           <meta
             name="twitter:image:alt"
@@ -26,7 +26,7 @@ export const Meta = () => {
           />
           <meta name="og:url" content="https://sol-nft.tools" />
           <meta name="og:title" content="Solana NFT Toolbox" />
-          <meta name="og:image" content="https://sol-nft.tools/sol-logo.jpeg" />
+          <meta name="og:image" content="https://arweave.net/jeC5bLjY2mY7mZJvnJ1aHTP1zh3oUSMGsalcrUwwJ28" />
           <meta
             property="og:description"
             content="Solana NFT Tools, made by @0xAlice_"
