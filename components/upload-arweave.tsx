@@ -1,7 +1,7 @@
 import Arweave from "arweave";
 import { JWKInterface } from "arweave/node/lib/wallet";
 import { useCallback, useEffect, useState } from "react";
-import { Divider, Button, Card, notification, Spin, Input } from "antd";
+import { Divider, Button, Card, notification, Spin, Input, Form } from "antd";
 import { FileUpload } from "./file-upload";
 import { DownloadOutlined } from "@ant-design/icons";
 import { download } from "../util/download";
@@ -56,6 +56,7 @@ export default function ARUpload() {
   const [balance, setBalance] = useState("none");
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [jwkForm] = Form.useForm();
 
   const generate = () =>
     generateArweaveWallet().then(async (jwk) => {
@@ -127,6 +128,24 @@ export default function ARUpload() {
     setFiles(loaded);
   }, []);
 
+  const importKey = useCallback(async () => {
+    const { key } = jwkForm.getFieldsValue();
+    try {
+      const parsed = JSON.parse(key);
+      const addr = await arweave.wallets.jwkToAddress(parsed);
+      setJwk(parsed);
+      setAddress(addr);
+      localStorage.setItem("arweave-key", key);
+      notification.open({
+        message: 'Successfully imported key!'
+      });
+    } catch (e) {
+      notification.open({
+        message: 'Key could not be imported!',
+      })
+    }
+  }, [jwkForm])
+
   return (
     <>
       <p>
@@ -175,29 +194,44 @@ export default function ARUpload() {
         )}
         {!jwk && (
           <Card>
-            <h3 style={{ textAlign: "center" }}>No Wallet found.</h3>
-            <br />
-            <Button
-              size="large"
-              style={{ display: "block", margin: "0 auto", minWidth: 320 }}
-              onClick={() => generate()}
-            >
-              Generate Wallet
-            </Button>
-            <br />
-            <div style={{ textAlign: "center" }}>Or</div>
-            <br />
-            <Button
-              size="large"
-              style={{ display: "block", margin: "0 auto", minWidth: 320 }}
-              onClick={() => generate()}
-            >
-              Import Wallet
-            </Button>
-            <Input/>
+            <Form form={jwkForm}>
+              <h3 style={{ textAlign: "center" }}>No Wallet found.</h3>
+              <Divider />
+              <Form.Item>
+                <Button
+                  size="large"
+                  style={{ display: "block", margin: "0 auto", minWidth: 320 }}
+                  onClick={() => generate()}
+                >
+                  Generate Wallet
+                </Button>
+              </Form.Item>
+              <div style={{ textAlign: "center" }}>Or</div>
+              <br />
+              <Card>
+                <h3 style={{ textAlign: "center" }}>Import Wallet (JWK JSON)</h3>
+                <br />
+                <Form.Item name="key">
+                  <Input.TextArea rows={10} />
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    size="large"
+                    style={{
+                      display: "block",
+                      margin: "0 auto",
+                      minWidth: 320,
+                    }}
+                    onClick={() => importKey()}
+                  >
+                    Import
+                  </Button>
+                </Form.Item>
+              </Card>
+            </Form>
           </Card>
         )}
-      </div> 
+      </div>
 
       {jwk && (
         <>
