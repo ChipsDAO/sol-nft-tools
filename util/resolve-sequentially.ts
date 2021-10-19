@@ -5,6 +5,6 @@ export const resolveSequentially = function (items: any[], func, setCounter?) {
         setCounter(i + 1)
       }
       return func(item);
-    });
+    }).catch(e => console.log(e));
   }, Promise.resolve());
 };
