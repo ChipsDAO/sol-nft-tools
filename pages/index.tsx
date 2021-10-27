@@ -51,16 +51,6 @@ export default function Home() {
     );
   };
 
-  const copyAddress = () => {
-    navigator.clipboard.writeText(
-      "DSmbnj9t7CCQdAZfvYe3PNbJB7CrVXpa29iW3VkgpEEZ"
-    );
-    notification.open({
-      message: "Copied to clipboard!",
-      duration: 2000,
-    });
-  };
-
   return (
     <>
       <Menu
@@ -68,18 +58,10 @@ export default function Home() {
         selectedKeys={selectedKeys}
         className={styles.menu}
       >
-        <Menu.Item style={{ position: "unset" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo-horizontal-gradient-dark.svg"
-            alt="Solana Logo"
-            className={styles["sol-logo"]}
-            style={
-              {
-                // width:
-              }
-            }
-          />
+        <Menu.Item >
+          <a href="https://pentacle.xyz" target="_blank" rel="noreferrer noopener">
+            <img src="https://pentacle.ai/pentacle-logo-LH.svg" style={{width:180}} alt="" />
+          </a>
         </Menu.Item>
 
         <Menu.Item onClick={() => setRoute("mints")} key="mints">
@@ -120,36 +102,40 @@ export default function Home() {
             {selectedKeys[0] === "ar-links" && <ARUpload />}
           </div>
         </main>
-        <footer className={styles.footer}>
-          <span style={{width: '100%'}}>
-            <span>
-              Made by
-              <a
-                style={{display: 'block'}}
-                target="_blank"
-                rel="noreferrer"
-                href="https://y.at/%E2%99%A0%E2%9D%A4%F0%9F%90%B0%F0%9F%90%B1"
-              >
-                Alice{" "}
-              </a>
-            </span>
-          </span>
-          <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', gap: 32}}>
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/21e8/sol-nft-tools"><i className="fab fa-github" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
-            <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/0xAlice_"><i className="fab fa-twitter" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
-            <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/JAU4e7Zf"><i className="fab fa-discord" style={{fontStyle: 'normal', fontSize: 24}}></i></a>
-          </div>
-          <span style={{width: '100%'}} className={styles["text-right"]}>
-            Tip Address (SOL) <br />
-            <span
-              onClick={() => copyAddress()}
-              className={styles["cursor-pointer"]}
-            >
-              DSmbnj9t7CCQdAZfvYe3PNbJB7CrVXpa29iW3VkgpEEZ
-            </span>
-          </span>
-        </footer>
-      </div>
-    </>
+        
+      <footer className={styles.footer}>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 32,
+          }}
+        >
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/penta-fun/sol-nft-tools/"
+          >
+            <i
+              className="fab fa-github"
+              style={{ fontStyle: "normal", fontSize: 24 }}
+            ></i>
+          </a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://twitter.com/pentaclexyz"
+          >
+            <i
+              className="fab fa-twitter"
+              style={{ fontStyle: "normal", fontSize: 24 }}
+            ></i>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </>
   );
 }

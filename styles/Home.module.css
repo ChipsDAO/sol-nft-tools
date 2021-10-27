@@ -26,6 +26,9 @@
   top: 0;
   z-index: 3;
 }
+.menu img {
+  margin: 0.5rem 0;
+}
 
 .footer {
   width: 100%;

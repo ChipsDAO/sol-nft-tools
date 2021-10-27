@@ -151,6 +151,9 @@ export default function ARUpload() {
       <p>
         Gib AR-Links lets you upload files to arweave. Please make sure to use
         files smaller than 250mb.
+
+        Caution: Beta Version!
+        It is possible that some files may fail to upload without error.
       </p>
       <p>
         Send some AR to this wallet to start uploading. You can download and
